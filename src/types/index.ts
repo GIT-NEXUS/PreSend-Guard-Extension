@@ -3,5 +3,6 @@ export interface PromptMessage {
   payload: {
     text: string;
     userId: string;
+    timestamp?: string; 
   };
 }
