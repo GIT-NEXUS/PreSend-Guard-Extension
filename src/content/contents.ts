@@ -1,6 +1,4 @@
 
-import { PromptMessage } from '../types/index';
-
 console.log('가로채기 모듈 활성화');
 
 const observer = new MutationObserver(() => {
@@ -32,22 +30,42 @@ function handleInterception(event: Event, inputArea: HTMLDivElement) {
   const userPrompt = inputArea?.innerText || '';
   if (!userPrompt.trim()) return;
 
-  // 물리적 전송 차단
   event.stopImmediatePropagation();
   event.preventDefault();
 
-  // 가로챈 텍스트를 출력
-  console.log("가로채기 성공");
-  console.log("가로챈 텍스트 내용 :", userPrompt); 
+  console.log('가로채기 성공');
+  console.log('가로챈 텍스트 내용 :', userPrompt);
 
-  const message: PromptMessage = {
-    type: 'ANALYZE_PROMPT',
-    payload: {
-      text: userPrompt,
-      userId: 'user_dev' 
-    }
-  };
+   const data = { text: userPrompt };
+  console.log('서버 전송 데이터:', data);
 
-  // 객체 전체 구조(확인용)
-  console.log('분석용 데이터 객체:', message);
+  fetch('http://localhost:8080/api/v1/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((result) => {
+      console.log('분석 결과:', result);
+      // 백엔드 응답: score, action, maskedText, phoneCount, emailCount, rrnCount
+
+      if (result.action === 'ALLOW') {
+        console.log('안전: 전송 허용');
+        // 다음 단계에서 "원래 전송 재실행" 붙일 수 있음
+      } else {
+        console.log(' 위험: 전송 차단 유지');
+        alert(
+          `⚠️ 민감정보 감지로 전송이 차단되었습니다.\n` +
+          `score: ${result.score}\n` +
+          `phone: ${result.phoneCount}, email: ${result.emailCount}, rrn: ${result.rrnCount}`
+        );
+      }
+    })
+    .catch((err) => {
+      console.error('API 요청 실패:', err);
+      alert('서버 분석 실패. (CORS/서버 상태/경로 확인)');
+    });
 }
