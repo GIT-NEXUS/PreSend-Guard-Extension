@@ -38,31 +38,32 @@ async function handleInterception(event: Event, inputArea: HTMLDivElement) {
   event.stopImmediatePropagation();
   event.preventDefault();
 
-  console.log('Nexus: 백엔드 분석 요청 중...', userPrompt);
+  // 백엔드로 분석 요청
+  const requestData = { text: userPrompt } as unknown as PromptMessage;
+
+  console.log('Nexus: 백엔드 분석 요청 중...', requestData);
 
   try {
     // 백엔드(8080) 호출
     const response = await fetch('http://localhost:8080/api/v1/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: userPrompt }) // PromptRequestDto
+      body: JSON.stringify(requestData) // 여기서 데이터 전송!
     });
 
     if (!response.ok) throw new Error('서버 응답 실패');
 
-    const result = await response.json(); // PromptResponseDto (score, action, maskedText 등)
+    const result = await response.json(); 
     console.log('분석 결과 수신:', result);
 
-    // [백엔드 PromptService.java 판정 기준 적용]
     // 1. ALLOW: 위험 요소 없음
     if (result.action === 'ALLOW') {
       console.log('✅ 안전: 전송 허용');
-      // 여기에 원래 전송을 실행하는 코드를 추가하면 메시지가 나갑니다.
     } 
-    // 2. WARN: score >= 70 (백엔드 로직)
+    // 2. WARN: score >= 70
     else if (result.action === 'WARN') {
       alert(
-        `🚨 보안 차단 (위험 점수: ${result.score})\n\n` +
+        `보안 차단 (위험 점수: ${result.score})\n\n` +
         `민감 정보가 너무 많아 전송이 금지되었습니다.\n` +
         `- 전화번호: ${result.phoneCount}건\n- 이메일: ${result.emailCount}건\n- 주민번호: ${result.rrnCount}건`
       );
@@ -70,7 +71,7 @@ async function handleInterception(event: Event, inputArea: HTMLDivElement) {
     // 3. MASK: score < 70 이지만 PII 존재
     else if (result.action === 'MASK') {
       const userAgreement = confirm(
-        `⚠️ 개인정보 주의 (위험 점수: ${result.score})\n\n` +
+        `개인정보 주의 (위험 점수: ${result.score})\n\n` +
         `안전하게 마스킹된 내용으로 수정해서 보낼까요?\n\n` +
         `[수정안]: ${result.maskedText}`
       );
