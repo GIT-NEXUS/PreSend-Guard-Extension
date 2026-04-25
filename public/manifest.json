@@ -13,7 +13,8 @@
   "content_scripts": [
     {
       "matches": ["https://chatgpt.com/*"],
-      "js": ["assets/contents.js"]
+      "js": ["assets/contents.js"],
+      "css": ["overlay.css"]
     }
   ]
 }

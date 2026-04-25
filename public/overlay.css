@@ -1,0 +1,200 @@
+#psg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: psg-fade-in 0.15s ease;
+}
+
+@keyframes psg-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+#psg-modal {
+  background: #ffffff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 16px;
+  width: 460px;
+  max-width: 92vw;
+  overflow: hidden;
+  font-family: 'Segoe UI', -apple-system, sans-serif;
+  animation: psg-slide-up 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes psg-slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+#psg-modal .psg-header {
+  background: #fff8e1;
+  border-bottom: 0.5px solid #ffe082;
+  padding: 13px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#psg-modal .psg-header .psg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e65c00;
+  flex-shrink: 0;
+}
+
+#psg-modal .psg-header .psg-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a3800;
+  margin: 0;
+}
+
+#psg-modal .psg-header .psg-score {
+  margin-left: auto;
+  background: rgba(230, 92, 0, 0.08);
+  border: 0.5px solid rgba(230, 92, 0, 0.25);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #e65c00;
+  white-space: nowrap;
+}
+
+#psg-modal .psg-body {
+  padding: 16px 20px 18px;
+}
+
+#psg-modal .psg-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+#psg-modal .psg-tag-phone {
+  background: #fff0f0;
+  border: 0.5px solid #ffb3b3;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+#psg-modal .psg-tag-email {
+  background: #f0f4ff;
+  border: 0.5px solid #b3c6ff;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2344c0;
+}
+
+#psg-modal .psg-tag-rrn {
+  background: #fff8e1;
+  border: 0.5px solid #ffe082;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8a6200;
+}
+
+#psg-modal .psg-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+#psg-modal .psg-box {
+  border: 0.5px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+#psg-modal .psg-box-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #aaaaaa;
+  margin-bottom: 6px;
+}
+
+#psg-modal .psg-box-text {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #333333;
+  word-break: break-all;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+#psg-modal .psg-box.psg-sanitized {
+  border-color: #b7e4c7;
+  background: #f0fdf4;
+}
+
+#psg-modal .psg-box.psg-sanitized .psg-box-label {
+  color: #52a36a;
+}
+
+#psg-modal .psg-box.psg-sanitized .psg-box-text {
+  color: #1a6e35;
+}
+
+#psg-modal .psg-buttons-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+#psg-modal button {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.12s, transform 0.1s;
+}
+
+#psg-modal button:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+#psg-modal button:active {
+  transform: translateY(0);
+}
+
+#psg-modal .psg-btn-edit {
+  background: #fafafa;
+  border: 0.5px solid #e0e0e0;
+  color: #555555;
+}
+
+#psg-modal .psg-btn-original {
+  background: #fff5f5;
+  border: 0.5px solid #ffb3b3;
+  color: #c0392b;
+}
+
+#psg-modal .psg-btn-send {
+  width: 100%;
+  padding: 11px;
+  background: #1a6e35;
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
