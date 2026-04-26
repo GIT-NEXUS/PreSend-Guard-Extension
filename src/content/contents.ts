@@ -84,21 +84,23 @@ function showOverlay(
   });
 }
 
-function dispatchSend(text: string) {
+  function dispatchSend(text: string) {
   const inputArea = document.querySelector('#prompt-textarea') as HTMLDivElement;
-  if (!inputArea) return;
+  const sendButton = document.querySelector('button[data-testid="send-button"]') as HTMLButtonElement;
+  if (!inputArea || !sendButton) return;
 
   inputArea.focus();
   document.execCommand('selectAll', false);
   document.execCommand('insertText', false, text);
 
   setTimeout(() => {
-    const sendButton = document.querySelector('button[data-testid="send-button"]') as HTMLButtonElement;
-    if (sendButton) {
-      sendButton.dataset.psgHooked = '';
-      sendButton.click();
-      setTimeout(() => { sendButton.dataset.psgHooked = 'true'; }, 300);
-    }
+    sendButton.dataset.psgSafeSend = 'true';
+    
+    sendButton.click();
+    
+    setTimeout(() => { 
+      sendButton.dataset.psgSafeSend = 'false'; 
+    }, 100);
   }, 80);
 }
 
@@ -128,9 +130,17 @@ function injectInterceptor(button: HTMLButtonElement, inputArea: HTMLDivElement)
 }
 
 function handleInterception(event: Event, inputArea: HTMLDivElement) {
+  const sendButton = document.querySelector('button[data-testid="send-button"]') as HTMLButtonElement;
+  
+
+  if (sendButton?.dataset.psgSafeSend === 'true') {
+    return; 
+  }
+
   const userPrompt = inputArea?.innerText || '';
   if (!userPrompt.trim()) return;
 
+  // 가로채기 시작
   event.stopImmediatePropagation();
   event.preventDefault();
 
@@ -157,9 +167,9 @@ function handleInterception(event: Event, inputArea: HTMLDivElement) {
         showOverlay(
           userPrompt,
           result,
-          () => dispatchSend(userPrompt),
-          () => dispatchSend(result.maskedText),
-          () => {}
+          () => dispatchSend(userPrompt),       // 원본 전송
+          () => dispatchSend(result.maskedText), // 마스킹 전송
+          () => {} // 직접 수정 (모달만 닫힘)
         );
       }
     })
