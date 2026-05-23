@@ -147,7 +147,7 @@ function handleInterception(event: Event, inputArea: HTMLDivElement) {
   console.log('가로채기 성공');
   console.log('가로챈 텍스트 내용 :', userPrompt);
 
-  fetch('http://localhost:8080/api/v1/analyze', {
+  fetch('http://localhost:8081/api/v1/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text: userPrompt }),
