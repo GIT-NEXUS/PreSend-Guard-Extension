@@ -100,7 +100,10 @@
 #psg-modal .psg-tag-phone { background: #eff6ff; color: #2563eb; }
 #psg-modal .psg-tag-email { background: #f3e8ff; color: #9333ea; }
 #psg-modal .psg-tag-rrn { background: #fff1f2; color: #e11d48; }
-
+#psg-modal .psg-tag-per { background: #fffbeb; color: #d97706; } 
+#psg-modal .psg-tag-org { background: #f0fdfa; color: #0d9488; } 
+#psg-modal .psg-tag-loc { background: #f7fee7; color: #65a30d; } 
+#psg-modal .psg-tag-job { background: #eef2ff; color: #4f46e5; } 
 
 #psg-modal .psg-boxes {
   display: grid;
